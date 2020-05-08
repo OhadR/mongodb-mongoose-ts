@@ -1,7 +1,8 @@
 var assert = require('assert');
-const mongoose = require('mongoose');
-const Cat = require('./mongooseSchemas/citySchema');
-const CityService = require('./mongooseServices/cityService');
+import * as mongoose from 'mongoose';
+// import {}
+// const Cat = require('./mongooseSchemas/citySchema');
+// const CityService = require('./mongooseServices/cityService');
 
 const Schema = mongoose.Schema;
 
@@ -96,9 +97,9 @@ function generateMongodbPolygon() {
 
 async function run() {
     await connectToMongo();
-
-    let objId = mongoose.Types.ObjectId();
-    CityService.CityService.create(objId, 'ohads', 8);
+    //
+    // let objId = mongoose.Types.ObjectId();
+    // CityService.CityService.create(objId, 'ohads', 8);
     // kitty = new Cat({
     //     sessionId: objId,
     //     name: 'ohads',
@@ -106,20 +107,20 @@ async function run() {
     //     size: 'BIG',
     //     generatedValue: 5});
 
-    try {
-        // await kitty.save();
-        // log('meow');
-
-
-        await Cat.findOneAndUpdate(
-            { sessionId: objId },
-            {name: "updated!"}
-            );
-        log('updated....');
-    } catch (error) {
-        log('# error: ' + error);
-        throw error;
-    }
+    // try {
+    //     // await kitty.save();
+    //     // log('meow');
+    //
+    //
+    //     await Cat.findOneAndUpdate(
+    //         { sessionId: objId },
+    //         {name: "updated!"}
+    //         );
+    //     log('updated....');
+    // } catch (error) {
+    //     log('# error: ' + error);
+    //     throw error;
+    // }
 
 }
 

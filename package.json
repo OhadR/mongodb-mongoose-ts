@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/OhadR/mongodb-mongoose-ts#readme",
   "dependencies": {
+    "mongoose": "^5.9.12",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3"
   }
