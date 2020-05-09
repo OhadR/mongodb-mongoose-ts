@@ -1,7 +1,7 @@
 import { City } from '../schemas/citySchema'
 import {Polygon} from "../../types/mongodb/polygon";
 
-export class CityService {
+export class CityRepository {
     async getAll() {
         return City.find({}).sort({createdAt: -1});
     }

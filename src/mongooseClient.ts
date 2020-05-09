@@ -1,5 +1,5 @@
 import { Polygon } from "./types/mongodb/polygon";
-import { CityService } from "./mongoose/repositories/cityService";
+import { CityRepository } from "./mongoose/repositories/cityRepository";
 import { CitizenRepository } from "./mongoose/repositories/citizenRepository";
 import { MongoWrapper } from "./mongoose/mongooseWrapper";
 
@@ -8,7 +8,7 @@ function log(msg) {
 }
 
 export class MongooseClient {
-    private cityService = new CityService();
+    private cityRepository = new CityRepository();
     private citizenRepository = new CitizenRepository();
     constructor() {
         MongoWrapper.connectToMongo();
@@ -17,7 +17,7 @@ export class MongooseClient {
     async run() {
         const generatedValue = Math.floor(Math.random() * 1000);
 
-        await this.cityService.create('NY',
+        await this.cityRepository.create('NY',
             'BIG',
             generatedValue,
             Polygon.generateMongodbPolygon(),
@@ -27,10 +27,10 @@ export class MongooseClient {
             999908,
         );
         try {
-            const xx = await this.cityService.getOneByField('generatedValue', generatedValue);
+            const xx = await this.cityRepository.getOneByField('generatedValue', generatedValue);
             log(xx._id);
 
-            await this.cityService.update(xx._id, {name: "updated!" + generatedValue});
+            await this.cityRepository.update(xx._id, {name: "updated!" + generatedValue});
             log('updated....');
         } catch (error) {
             log('# error: ' + error);
