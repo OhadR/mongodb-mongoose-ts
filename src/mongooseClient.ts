@@ -1,9 +1,6 @@
-//import * as mongoose from 'mongoose';
 import mongoose = require("mongoose");
-import { City } from './mongooseSchemas/citySchema'
 import { Polygon } from "./types/mongodb/polygon";
-// import {}
-// const CityService = require('./mongooseServices/cityService');
+import { CityService } from "./mongooseServices/cityService";
 
 const Schema = mongoose.Schema;
 
@@ -12,6 +9,7 @@ function log(msg) {
 }
 
 export class MongoWrapper {
+    private cityService = new CityService();
     constructor() {
     }
 
@@ -54,23 +52,18 @@ export class MongoWrapper {
     async run() {
         await this.connectToMongo();
         const generatedValue = Math.floor(Math.random() * 1000);
-        //
-        // CityService.CityService.create(objId, 'ohads', 8);
-        const kitty = new City({
-            name: 'ohads',
-            region: Polygon.generateMongodbPolygon(),
-            size: 'BIG',
-            generatedValue: generatedValue});
+
+        await this.cityService.create('NY',
+            'BIG',
+            generatedValue,
+            Polygon.generateMongodbPolygon(),
+        );
 
         try {
-            await kitty.save();
-            log('meow');
+            const xx = await this.cityService.getOneByField('generatedValue', generatedValue);
+            log(xx._id);
 
-
-            await City.findOneAndUpdate(
-                { generatedValue: generatedValue },
-                { name: "updated!" + generatedValue }
-                );
+            await this.cityService.update(xx._id, {name: "updated!" + generatedValue});
             log('updated....');
         } catch (error) {
             log('# error: ' + error);
@@ -79,7 +72,6 @@ export class MongoWrapper {
 
     }
 }
-
 
 class Coordinate {
     constructor(public long: number, public lat: number) {
