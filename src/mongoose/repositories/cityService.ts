@@ -1,5 +1,5 @@
-import { City } from '../mongooseSchemas/citySchema'
-import {Polygon} from "../types/mongodb/polygon";
+import { City } from '../schemas/citySchema'
+import {Polygon} from "../../types/mongodb/polygon";
 
 export class CityService {
     async getAll() {
