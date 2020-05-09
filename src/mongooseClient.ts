@@ -2,6 +2,8 @@ import { Polygon } from "./types/mongodb/polygon";
 import { CityRepository } from "./mongoose/repositories/cityRepository";
 import { CitizenRepository } from "./mongoose/repositories/citizenRepository";
 import { MongoWrapper } from "./mongoose/mongooseWrapper";
+import { CityDao } from "./mongoose/dao/cityDao";
+import { CitizenDao } from "./mongoose/dao/citizenDao";
 
 function log(msg) {
     console.log(Date.now()/1000 + ' ' + msg);
@@ -17,15 +19,15 @@ export class MongooseClient {
     async run() {
         const generatedValue = Math.floor(Math.random() * 1000);
 
-        await this.cityRepository.create('NY',
+        const cityDao = new CityDao('NY',
             'BIG',
             generatedValue,
-            Polygon.generateMongodbPolygon(),
-        );
+            Polygon.generateMongodbPolygon());
+        await this.cityRepository.create( cityDao );
 
-        await this.citizenRepository.create('Ohad redlich',
-            999908,
-        );
+        const citizenDao = new CitizenDao('Ohad redlich',
+            generatedValue);
+        await this.citizenRepository.create( citizenDao );
         try {
             const xx = await this.cityRepository.getOneByField('generatedValue', generatedValue);
             log(xx._id);
