@@ -1,5 +1,5 @@
 import { City } from '../schemas/citySchema'
-import {Polygon} from "../../types/mongodb/polygon";
+import { Polygon } from "../../types/mongodb/polygon";
 
 export class CityRepository {
     async getAll() {
@@ -49,6 +49,4 @@ export class CityRepository {
 
 
     }
-
-
 }
