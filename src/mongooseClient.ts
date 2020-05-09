@@ -1,5 +1,6 @@
 import { Polygon } from "./types/mongodb/polygon";
 import { CityService } from "./mongoose/repositories/cityService";
+import { CitizenRepository } from "./mongoose/repositories/citizenRepository";
 import { MongoWrapper } from "./mongoose/mongooseWrapper";
 
 function log(msg) {
@@ -8,6 +9,7 @@ function log(msg) {
 
 export class MongooseClient {
     private cityService = new CityService();
+    private citizenRepository = new CitizenRepository();
     constructor() {
         MongoWrapper.connectToMongo();
     }
@@ -21,6 +23,9 @@ export class MongooseClient {
             Polygon.generateMongodbPolygon(),
         );
 
+        await this.citizenRepository.create('Ohad redlich',
+            999908,
+        );
         try {
             const xx = await this.cityService.getOneByField('generatedValue', generatedValue);
             log(xx._id);
