@@ -23,7 +23,7 @@ export class BaseRepository<T extends BaseDao> {
         const city = new this.schema( dao );
 
         try {
-            await city.save();
+            return await city.save();
             console.log(dao._schema + ' was created');
         } catch (error) {
             console.error('# ' + error);
