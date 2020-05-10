@@ -41,4 +41,8 @@ export class BaseRepository<T extends BaseDao> {
         });
         return item.save();
     }
+
+    async findOneAndUpdate(condition, data) {
+        return await this.schema.findOneAndUpdate(condition, data);
+    }
 }

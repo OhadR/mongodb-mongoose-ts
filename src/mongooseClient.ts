@@ -34,6 +34,14 @@ export class MongooseClient {
 
             await this.cityRepository.update(xx._id, {name: "updated!" + generatedValue});
             log('updated....');
+
+            await this.cityRepository.findOneAndUpdate({
+                'generatedValue': generatedValue,
+            }, {
+                'generatedValue': generatedValue + 1,
+            });
+            log('findOneAndUpdate finished, updated to ' + generatedValue + 1);
+
         } catch (error) {
             log('# error: ' + error);
             throw error;
