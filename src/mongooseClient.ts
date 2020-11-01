@@ -10,10 +10,19 @@ function log(msg) {
 }
 
 export class MongooseClient {
+    private static _instance: MongooseClient;
     private cityRepository = new CityRepository();
     private citizenRepository = new CitizenRepository();
-    constructor() {
+
+    private constructor() {
         MongoWrapper.connectToMongo();
+    }
+
+    public static get instance() {
+        if( !MongooseClient._instance )
+            MongooseClient._instance = new MongooseClient();
+
+        return MongooseClient._instance;
     }
 
     async run() {
@@ -60,5 +69,5 @@ class Coordinate {
 }
 
 
-let repo : MongooseClient = new MongooseClient();
 repo.run();
+let repo : MongooseClient = MongooseClient.instance;
