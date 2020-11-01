@@ -12,6 +12,11 @@ use mongoose:
 
 > npm install mongoose
 
+to generate IDs:
+
+>npm install uuid
+
+
 ## implementation
 
 Each collection in mongo is represented by:
@@ -21,6 +26,13 @@ Each collection in mongo is represented by:
 
 thanks to the fact that each Dao extends BaseDao and passes the schema-name on ctor, the BaseRepo knows the 
 Dao type (the schema name of each object) so it helps to log upon item creation.
+
+## Running
+
+    ts-node dist\mongooseClient.js
+Or:
+    
+    ts-node src\mongooseClient.ts
 
 --------------
 
