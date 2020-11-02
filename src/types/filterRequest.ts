@@ -11,8 +11,7 @@ export interface FilterRequest {
 }
 
 export interface SortFieldRequest {
-    field: string;
-    order: Order;
+    [key: string]: Order;
 }
 
 export interface SortRequest {

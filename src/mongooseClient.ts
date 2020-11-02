@@ -95,7 +95,7 @@ export class MongooseClient {
             query = query.where('supplierName').equals(filter.supplierName);
 
         if(filter.fromAge)
-            query = query.where('ago').gt(filter.fromAge);
+            query = query.where('age').gt(filter.fromAge);
 
         if(filter.toAge)
             query = query.where('age').lt(filter.toAge);
@@ -122,20 +122,18 @@ export class MongooseClient {
             supplierName: "ohads",
 //            toDate: new Date8(2020, 9,0),
             fromAge: 40,
-            toAge: 45,
+            toAge: 60,
         };
 
         const sort: SortFieldRequest = {
-            field: 'age',
-            order: Order.descending
-
+            age: Order.descending,
         };
 
-        const query: mongoose.Query<any> = this.buildQuery(filter);
+        let query: mongoose.Query<any> = this.buildQuery(filter);
 
-        const sortedQuery = query.sort(sort);
+        query = query.sort(sort);
 
-        const result = await sortedQuery.exec();
+        const result = await query.exec();
         log('@@@ ' + result);
     }
 }
