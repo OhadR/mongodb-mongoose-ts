@@ -7,7 +7,7 @@ import { CitizenDao } from "./mongoose/dao/citizenDao";
 import { SessionDao } from "./mongoose/dao/sessionDao";
 import { SessionModel } from "./mongoose/schemas/session-schema"
 import { v4 as uuidv4 } from 'uuid';
-import { FilterRequest } from "./types/filterRequest";
+import { FilterRequest, Order, SortFieldRequest } from "./types/filterRequest";
 import * as mongoose from 'mongoose';
 
 function log(msg) {
@@ -65,7 +65,7 @@ export class MongooseClient {
 
     async generateSession() {
         const sessionDao = new SessionDao(uuidv4(),
-            Math.floor(Math.random() * 100),
+            Math.floor(Math.random() * 100),        //age
             'ohads',
             new Date(2020, Math.random() * 12, Math.random() * 30),
             {
@@ -83,19 +83,22 @@ export class MongooseClient {
             await this.generateSession();
     }
 
-    async buildQuery(filter: FilterRequest): Promise<mongoose.Query<any>> {
-        let query = SessionModel;
-        // if(filter.fromDate)
-        //     query = query.where('createdAt').gt(new Date(filter.fromDate).toISOString());
-        //
-        // if(filter.toDate)
-        //     query = query.where('createdAt').lt(new Date(filter.toDate).toISOString());
+    buildQuery(filter: FilterRequest): mongoose.Query<any> {
+        let query: mongoose.Query = SessionModel.find();
+        if(filter.fromDate)
+            query = query.where('date').gt(new Date(filter.fromDate).toISOString());
+
+        if(filter.toDate)
+            query = query.where('date').lt(new Date(filter.toDate).toISOString());
 
         if(filter.supplierName)
             query = query.where('supplierName').equals(filter.supplierName);
 
-        query = query.where('sessionId').equals('9bef7941-8e8e-46e4-9a02-cf597e790e26');
+        if(filter.fromAge)
+            query = query.where('ago').gt(filter.fromAge);
 
+        if(filter.toAge)
+            query = query.where('age').lt(filter.toAge);
 
         return query;
     }
@@ -105,25 +108,35 @@ export class MongooseClient {
 // create dataset of N sessions (do it only once...):
 //        await this.generateSessions(100);
 
-        // instead of writing:
-        //const r = await SessionModel.find({age: {$gte: 21, $lte: 65}});
+/*
+        let r = SessionModel;
+        r = r.where('age').gte(40).lte(45);
+        r = r.where('date').lt(new Date(2020, 2,0).toISOString());
 
-        //write this:
-        let r = await SessionModel.where('age').gte(21).lte(65);
-        log(r);
-
-        r = await SessionModel.where('createdAt').lt(new Date().toISOString());
-        log('lt date: ' + r);
+        r= await r.exec();
+        log('@@@ ' + r);
+*/
 
         const filter: FilterRequest = {
-            country: 'israel',
             region: Polygon.generateMongodbPolygon(),
             supplierName: "ohads",
-//            toDate: new Date(),
+//            toDate: new Date8(2020, 9,0),
+            fromAge: 40,
+            toAge: 45,
         };
-        const query: mongoose.Query<any> = await this.buildQuery(filter);
-        log('lt date: ' + query);
 
+        const sort: SortFieldRequest = {
+            field: 'age',
+            order: Order.descending
+
+        };
+
+        const query: mongoose.Query<any> = this.buildQuery(filter);
+
+        const sortedQuery = query.sort(sort);
+
+        const result = await sortedQuery.exec();
+        log('@@@ ' + result);
     }
 }
 

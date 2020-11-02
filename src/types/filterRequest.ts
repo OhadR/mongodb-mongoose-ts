@@ -5,7 +5,21 @@ export interface FilterRequest {
     toDate?: Date;
     region?: Polygon;
     country?: string;
-    userId?: string;
     supplierName?: string;
-    published?: boolean;
+    fromAge: number,
+    toAge: number,
+}
+
+export interface SortFieldRequest {
+    field: string;
+    order: Order;
+}
+
+export interface SortRequest {
+    sorts: SortFieldRequest[];
+}
+
+export enum Order {
+    ascending,
+    descending,
 }

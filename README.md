@@ -53,3 +53,21 @@ https://github.com/OhadR/node-geocoder-client#debug-from-webstorm
 -	mongo docker is up (requires authentication)
 -	connect using demo app: BAD credentials.
 -	result: after exactly 30 secs (mongoose default) get error “MongooseServerSelectionError: Authentication failed”. (option ‘serverSelectionTimeoutMS‘)
+
+
+# mongoose Queries
+
+    // instead of writing:
+    await SessionModel.find({age: {$gte: 21, $lte: 65}});
+
+    //write this:
+    await SessionModel.where('age').gte(21).lte(41);
+    
+this is how to chain queries. Note that `q` is of type Query, and to get query from the model is by calling `.find()`:
+Note also that all calls are without `await`, except the `exec()`:
+    
+    let q = SessionModel;
+    q = q.where('age').gte(40).lte(45);
+    q = q.where('date').lt(new Date(2020, 2,0).toISOString());
+
+    const result = await q.exec();
