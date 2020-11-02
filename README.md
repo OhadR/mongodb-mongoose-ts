@@ -34,6 +34,10 @@ Or:
     
     ts-node src\mongooseClient.ts
 
+### Debug from WebStorm
+
+https://github.com/OhadR/node-geocoder-client#debug-from-webstorm
+
 --------------
 
 # Mongodb connection with mongoose

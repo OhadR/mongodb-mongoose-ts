@@ -11,6 +11,9 @@ const sessionSchema = new mongoose.Schema(
             required: true,
         },
         metadata: Object,
+        age: Number,
+        supplierName: String,
+        date: Date,
     },
     {
         autoCreate: true,
