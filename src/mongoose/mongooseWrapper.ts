@@ -43,4 +43,9 @@ export class MongoWrapper {
             log('@@disconnected :( ');
         });
     }
+
+    static async disconnect() {
+        log('disconnecting to mongodb...');
+        await mongoose.disconnect();
+    }
 }

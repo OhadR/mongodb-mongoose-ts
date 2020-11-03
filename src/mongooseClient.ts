@@ -101,9 +101,10 @@ export class MongooseClient {
             query = query.where('age').lt(filter.toAge);
 
 
-        query
-            .limit(paging.pageSize)
-            .skip(paging.pageSize * paging.pageNumber)
+        if(paging)
+            query
+                .limit(paging.pageSize)
+                .skip(paging.pageSize * paging.pageNumber);
 
         return query;
     }
@@ -146,6 +147,8 @@ export class MongooseClient {
 
         const result = await query.exec();
         log('@@@ ' + result);
+
+        await MongoWrapper.disconnect();
     }
 }
 
