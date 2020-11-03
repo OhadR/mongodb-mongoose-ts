@@ -88,21 +88,22 @@ export class MongooseClient {
             return null;
 
         let query: mongoose.Query = SessionModel.find();
-        if(request.filter.fromDate)
-            query = query.where('date').gt(new Date(request.filter.fromDate).toISOString());
+        if(request.filter) {
+            if (request.filter.fromDate)
+                query = query.where('date').gt(new Date(request.filter.fromDate).toISOString());
 
-        if(request.filter.toDate)
-            query = query.where('date').lt(new Date(request.filter.toDate).toISOString());
+            if (request.filter.toDate)
+                query = query.where('date').lt(new Date(request.filter.toDate).toISOString());
 
-        if(request.filter.supplierName)
-            query = query.where('supplierName').equals(request.filter.supplierName);
+            if (request.filter.supplierName)
+                query = query.where('supplierName').equals(request.filter.supplierName);
 
-        if(request.filter.fromAge)
-            query = query.where('age').gt(request.filter.fromAge);
+            if (request.filter.fromAge)
+                query = query.where('age').gt(request.filter.fromAge);
 
-        if(request.filter.toAge)
-            query = query.where('age').lt(request.filter.toAge);
-
+            if (request.filter.toAge)
+                query = query.where('age').lt(request.filter.toAge);
+        }
 
         if(request.sort)
             query = query.sort(request.sort);
