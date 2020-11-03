@@ -10,15 +10,20 @@ export interface FilterRequest {
     toAge: number,
 }
 
-export interface SortFieldRequest {
-    [key: string]: Order;
-}
+//-------------------------------------------------------------------------//
 
 export interface SortRequest {
-    sorts: SortFieldRequest[];
+    [key: string]: Order;
 }
 
 export enum Order {
     ascending,
     descending,
+}
+
+//-------------------------------------------------------------------------//
+
+export interface PagingRequest {
+    pageNumber: number;
+    pageSize: number;
 }

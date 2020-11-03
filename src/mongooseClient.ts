@@ -7,7 +7,7 @@ import { CitizenDao } from "./mongoose/dao/citizenDao";
 import { SessionDao } from "./mongoose/dao/sessionDao";
 import { SessionModel } from "./mongoose/schemas/session-schema"
 import { v4 as uuidv4 } from 'uuid';
-import { FilterRequest, Order, SortFieldRequest } from "./types/filterRequest";
+import { FilterRequest, Order, PagingRequest, SortRequest } from "./types/filterRequest";
 import * as mongoose from 'mongoose';
 
 function log(msg) {
@@ -83,7 +83,7 @@ export class MongooseClient {
             await this.generateSession();
     }
 
-    buildQuery(filter: FilterRequest): mongoose.Query<any> {
+    buildQuery(filter: FilterRequest, paging: PagingRequest): mongoose.Query<any> {
         let query: mongoose.Query = SessionModel.find();
         if(filter.fromDate)
             query = query.where('date').gt(new Date(filter.fromDate).toISOString());
@@ -99,6 +99,11 @@ export class MongooseClient {
 
         if(filter.toAge)
             query = query.where('age').lt(filter.toAge);
+
+
+        query
+            .limit(paging.pageSize)
+            .skip(paging.pageSize * paging.pageNumber)
 
         return query;
     }
@@ -125,11 +130,17 @@ export class MongooseClient {
             toAge: 60,
         };
 
-        const sort: SortFieldRequest = {
+        const sort: SortRequest = {
             age: Order.descending,
         };
 
-        let query: mongoose.Query<any> = this.buildQuery(filter);
+        const paging: PagingRequest = {
+            pageNumber: 4,
+            pageSize: 3
+        };
+
+
+        let query: mongoose.Query<any> = this.buildQuery(filter, paging);
 
         query = query.sort(sort);
 
