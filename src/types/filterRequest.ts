@@ -1,5 +1,13 @@
 import { Polygon } from "./mongodb/polygon";
 
+export interface GetSessionsRequest {
+    paging: PagingRequest;
+    filter: FilterRequest;
+    sort: SortRequest;
+}
+
+//-------------------------------------------------------------------------//
+
 export interface FilterRequest {
     fromDate?: Date;
     toDate?: Date;

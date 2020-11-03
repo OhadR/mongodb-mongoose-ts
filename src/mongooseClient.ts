@@ -7,7 +7,7 @@ import { CitizenDao } from "./mongoose/dao/citizenDao";
 import { SessionDao } from "./mongoose/dao/sessionDao";
 import { SessionModel } from "./mongoose/schemas/session-schema"
 import { v4 as uuidv4 } from 'uuid';
-import { FilterRequest, Order, PagingRequest, SortRequest } from "./types/filterRequest";
+import { FilterRequest, GetSessionsRequest, Order, PagingRequest, SortRequest } from "./types/filterRequest";
 import * as mongoose from 'mongoose';
 
 function log(msg) {
@@ -83,28 +83,34 @@ export class MongooseClient {
             await this.generateSession();
     }
 
-    buildQuery(filter: FilterRequest, paging: PagingRequest): mongoose.Query<any> {
+    buildQuery(request: GetSessionsRequest): mongoose.Query<any> {
+        if(!request)
+            return null;
+
         let query: mongoose.Query = SessionModel.find();
-        if(filter.fromDate)
-            query = query.where('date').gt(new Date(filter.fromDate).toISOString());
+        if(request.filter.fromDate)
+            query = query.where('date').gt(new Date(request.filter.fromDate).toISOString());
 
-        if(filter.toDate)
-            query = query.where('date').lt(new Date(filter.toDate).toISOString());
+        if(request.filter.toDate)
+            query = query.where('date').lt(new Date(request.filter.toDate).toISOString());
 
-        if(filter.supplierName)
-            query = query.where('supplierName').equals(filter.supplierName);
+        if(request.filter.supplierName)
+            query = query.where('supplierName').equals(request.filter.supplierName);
 
-        if(filter.fromAge)
-            query = query.where('age').gt(filter.fromAge);
+        if(request.filter.fromAge)
+            query = query.where('age').gt(request.filter.fromAge);
 
-        if(filter.toAge)
-            query = query.where('age').lt(filter.toAge);
+        if(request.filter.toAge)
+            query = query.where('age').lt(request.filter.toAge);
 
 
-        if(paging)
+        if(request.sort)
+            query = query.sort(request.sort);
+
+        if(request.paging)
             query
-                .limit(paging.pageSize)
-                .skip(paging.pageSize * paging.pageNumber);
+                .limit(request.paging.pageSize)
+                .skip(request.paging.pageSize * request.paging.pageNumber);
 
         return query;
     }
@@ -140,10 +146,14 @@ export class MongooseClient {
             pageSize: 3
         };
 
+        const request: GetSessionsRequest = {
+            filter,
+            paging,
+            sort
+        };
 
-        let query: mongoose.Query<any> = this.buildQuery(filter, paging);
 
-        query = query.sort(sort);
+        let query: mongoose.Query<any> = this.buildQuery(request);
 
         const result = await query.exec();
         log('@@@ ' + result);
