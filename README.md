@@ -71,3 +71,18 @@ Note also that all calls are without `await`, except the `exec()`:
     q = q.where('date').lt(new Date(2020, 2,0).toISOString());
 
     const result = await q.exec();
+    
+    
+## lean()
+
+https://mongoosejs.com/docs/api.html#query_Query-lean
+
+[Faster Mongoose Queries With Lean](https://mongoosejs.com/docs/tutorials/lean.html)
+
+Documents returned from queries with the lean option enabled are plain javascript objects, not Mongoose Documents. They have no save method, getters/setters, virtuals, or other Mongoose features.
+   
+    await query.exec(); 
+    await query.lean().exec();
+    
+    const docs = await Model.find().lean();
+    docs[0] instanceof mongoose.Document; // false

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/OhadR/mongodb-mongoose-ts#readme",
   "dependencies": {
     "mongoose": "^5.9.12",
+    "object-sizeof": "^1.6.1",
     "ts-node": "^8.10.1",
     "typescript": "^3.8.3",
     "uuid": "^8.3.1"
