@@ -86,3 +86,32 @@ Documents returned from queries with the lean option enabled are plain javascrip
     
     const docs = await Model.find().lean();
     docs[0] instanceof mongoose.Document; // false
+    
+    
+
+# Migration    
+    
+1. dump the DB
+2. run the migration script.
+
+## dumping
+
+enter mongo machine:
+    
+    kubectl exec -it mongo-6b759d6c46-hfqrt sh
+    
+dump:
+    
+    >mongodump --username root --password q1### --authenticationDatabase admin    
+
+copy files from mongo pod (kubernetes) to local machine:
+
+    $ kubectl cp mongo-6b759d6c46-hfqrt:/dump /tmp/ohads
+    
+place the file on the KUBER machine, enter that machine and copy the script to the mongo pod:    
+
+    $ kubectl cp migration_area.js mongo-6b759d6c46-hfqrt:/ohads-scripts-f/mig-script.js
+
+enter the pod (see above how) and run the script:
+    
+    node mig-script.js
