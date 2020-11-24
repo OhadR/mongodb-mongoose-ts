@@ -156,8 +156,17 @@ export class MongooseClient {
 
         let query: mongoose.Query<any> = this.buildQuery(request);
 
-        const result = await query.exec();
+        const result: SessionDao[] = await query.exec();
         log('@@@ ' + result);
+        log('@@@ ' + result.length);
+
+        //iterate the results:
+        for(let i = 0; i < result.length; ++i) {
+            log( result[i].createdAt );
+            log('!!! ' + (result[i]));
+        }
+
+//        const layersArray: Layer[][] = await Promise.all(result.map(session => this.processAsset(session)));
 
         await MongoWrapper.disconnect();
     }

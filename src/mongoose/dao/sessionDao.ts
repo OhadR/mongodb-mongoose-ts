@@ -5,5 +5,6 @@ export class SessionDao {
         public supplierName: string,
         public date: Date,
         public metadata: { [key: string]: any },
+        public createdAt?: Date,
     ) {}
 }
