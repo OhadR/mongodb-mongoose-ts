@@ -102,11 +102,17 @@ enter mongo machine:
     
 dump:
     
-    >mongodump --username root --password q1### --authenticationDatabase admin    
+    # mongodump --username root --password q1### --authenticationDatabase admin    
 
 copy files from mongo pod (kubernetes) to local machine:
 
     $ kubectl cp mongo-6b759d6c46-hfqrt:/dump /tmp/ohads
+    
+resotring the dump to the local mongo:
+
+    > mongorestore.exe --host 127.0.0.1 --port 27017 C:\Ohads\temp\ohads2    
+    
+## migration 
     
 place the file on the KUBER machine, enter that machine and copy the script to the mongo pod:    
 
