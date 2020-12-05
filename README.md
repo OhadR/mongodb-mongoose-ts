@@ -118,6 +118,12 @@ place the file on the KUBER machine, enter that machine and copy the script to t
 
     $ kubectl cp migration_area.js mongo-6b759d6c46-hfqrt:/ohads-scripts-f/mig-script.js
 
-enter the pod (see above how) and run the script:
+~~enter the pod (see above how) and run the script:~~
     
     node mig-script.js
+
+The pod of mongo (in kubernetes) does not have node installed. So I use mongo itself to run the script. Run 
+this command from the mongo shell, in the mongo pod: (note that 
+the script is different than the one under `/node-scripts`; it was refactored so mongo shell can run it)
+
+    mongo script-name.js
